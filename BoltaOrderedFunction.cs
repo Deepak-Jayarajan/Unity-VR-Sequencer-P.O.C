@@ -1,0 +1,78 @@
+using UnityEngine;
+using UltimateXR.Manipulation;
+using Utility;
+
+public class BoltaOrderedFunction : OrderedFunction
+
+{
+    [SerializeField] private UxrGrabbableObject pipe;
+    [SerializeField] private UxrGrabbableObject m201;
+    [SerializeField] private UxrGrabbableObject m202;
+    [SerializeField] private UxrGrabbableObject washer1;
+    [SerializeField] private UxrGrabbableObject washer2;
+    [SerializeField] private UxrGrabbableObjectAnchor boltaanchor;
+    [SerializeField] private bool isBoltaMounted;
+    private bool _wasPlacedInPreviousFrame = false;
+
+
+    public void Init()
+    {
+        DisableAllGrabbables();
+        SetGrabbable(m201, true, false);
+        isBoltaMounted = false;
+        Debug.Log("test");
+    }
+
+    public void DisableAllGrabbables()
+    {
+        SetGrabbable(pipe, false, true);
+        SetGrabbable(m201, false, true);
+        SetGrabbable(m202, false, true);
+        SetGrabbable(washer1, false, true);
+        SetGrabbable(washer2, false, true);
+    }
+
+    private static void SetGrabbable(UxrGrabbableObject _grabbable, bool _isGrabbable, bool _isLocked)
+    {
+        _grabbable.IsGrabbable = _isGrabbable;
+        _grabbable.IsLockedInPlace = _isLocked;
+    }
+
+    void Update()
+    {
+        if (m201.CurrentAnchor == boltaanchor && _wasPlacedInPreviousFrame == false)
+        {
+            Debug.Log("Attaching Pipe");
+            Debug.Log("Check");
+            SetGrabbable(m201, false, true);
+            Debug.Log("Check1");
+            isBoltaMounted = true;
+            Debug.Log("Check2");
+            OnExit();
+        }
+        else if (m201.CurrentAnchor == null && _wasPlacedInPreviousFrame == true)
+        {
+            Debug.Log("Bolta");
+        }
+        _wasPlacedInPreviousFrame = m201.CurrentAnchor == boltaanchor;
+    }
+
+    public override void OnEntry()
+    {
+        Init();
+        Debug.Log($"{gameObject.name} used its OnEntry method.");
+        OnUpdate();
+    }
+
+    public override void OnUpdate()
+    {
+        Debug.Log($"{gameObject.name} used its OnUpdate method.");
+        Update();
+    }
+
+    public override void OnExit()
+    {
+        Debug.Log($"{gameObject.name} used its OnExit method.");
+        OrderedFunctionManager.NextFunction();
+    }
+}
