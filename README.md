@@ -6,8 +6,12 @@ Sample Project to demonstrate the sequencing program on an open-source SCANIA en
 
 Order of steps:
 
-Pick and place pipe
-Pick and Place washer 1
-Pick and Place washer 2
-Pick and place bolt 1
-Pick and place bolt 2
+1 Pick and place pipe
+
+2 Pick and Place washer 1
+
+3 Pick and Place washer 2
+
+4 Pick and place bolt 1
+
+5 Pick and place bolt 2
